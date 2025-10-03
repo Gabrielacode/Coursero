@@ -1,0 +1,17 @@
+body {
+    background-color: #f8f9fa;
+}
+h1, h2 {
+    color: #343a40;
+}
+.card {
+    transition: transform 0.2s;
+}
+.card:hover {
+    transform: scale(1.03);
+}
+footer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
