@@ -26,8 +26,9 @@ public class CourseService {
       return courseRepository.save(courseToAdd);
   }
 
-//  public Page<Course> getPaginatedResultOfCourse(int pageSize , int pageNumber){
-//     PageRequest pageRequest ;
-//  }
+  public Page<Course> getPaginatedResultOfCourse(int pageSize , int pageNumber){
+     PageRequest pageRequest = PageRequest.of(pageNumber, pageSize) ;
+      return courseRepository.findAll(pageRequest) ;
+  }
 
 }

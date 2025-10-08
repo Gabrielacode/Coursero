@@ -15,7 +15,13 @@ public class CoursesController {
     //This page is to view the main courses page
    private final CourseService courseService;
     @GetMapping()
-    public String getCourses(ModelMap model) {
+    public String getCourses(
+            @RequestParam(name = "num",defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "size",defaultValue = "10") Integer pageSize,
+            ModelMap model) {
+      var result =   courseService.getPaginatedResultOfCourse(pageSize,pageNumber);
+
+      model.addAttribute("result",result);
         model.addAttribute("content","courses");
         return "base-layout";
     }
@@ -25,7 +31,7 @@ public class CoursesController {
     public String getIndividualCourse(@PathVariable Long id, ModelMap model) {
 
         model.addAttribute("content","course-details");
-        return "base-layout";
+       return "base-layout";
     }
     @GetMapping("/add")
     public String addCourse(ModelMap model){

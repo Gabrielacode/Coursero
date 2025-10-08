@@ -1,36 +1,43 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
 <div th:fragment="content">
     <h2 class="mb-4">Available Courses</h2>
 
     <div class="d-flex justify-content-between mb-3">
         <input type="text" class="form-control w-25" placeholder="Search courses...">
         <a class="btn btn-primary" th:href="@{/courses/add}">Add Course</a>
-        <select class="form-select w-25">
+        <select  class="form-select w-25">
             <option>Sort by Name</option>
             <option>Sort by Date</option>
             <option>Sort by Price</option>
         </select>
+
     </div>
 
-    <div class="row">
-        <div class="col-md-4 mb-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Spring Boot Basics</h5>
-                    <p class="card-text">Learn Spring Boot from scratch.</p>
-                    <a href="/courses/12" class="btn btn-sm btn-outline-primary">View Details</a>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-4" th:each="course : ${result.getContent}">
+                <div class="card mb-3 shadow-sm" >
+                    <div class="card-body">
+                        <h5 th:text="${course.courseName}">Course Name</h5>
+                        <p th:text="${course.courseDescription}">Description</p>
+                        <p>
+                            <small> <span th:text="${course.numberOfHours.toString()} "></span> hours </small>
+                        </p>
+                        <a th:href="@{/courses/{id}(id=${course.id})}" class="btn btn-primary btn-sm">View</a>
+                    </div>
                 </div>
             </div>
         </div>
-        <!-- Repeat more cards -->
     </div>
+
 
     <nav>
         <ul class="pagination justify-content-center mt-4">
-            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            <li th:if ="${result.hasPrevious()}"  class="page-item"><a class="page-link" th:href="@{/courses(num=${result.getNumber()-1})}">Previous</a></li>
+            <li class="page-item" ><a class="page-link"  th:text="${result.getNumber()}" th:href="@{/courses(num=${result.getNumber()})}">1</a></li>
+            <li th:if ="${result.hasNext()}" class="page-item"><a class="page-link" th:href="@{/courses(num=${result.getNumber()+1})}">Next</a></li>
         </ul>
     </nav>
 
 </div>
+</html>
