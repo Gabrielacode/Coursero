@@ -28,8 +28,10 @@ public class CoursesController {
 
     //Then for the individual courses we will pass the course id
     @GetMapping("/{id}")
-    public String getIndividualCourse(@PathVariable Long id, ModelMap model) {
-
+        public String getIndividualCourse(@PathVariable int id, ModelMap model) {
+       var courseResult = courseService.findByCourseId(id);
+       //We pass the optional directly to the model
+        model.addAttribute("result",courseResult);
         model.addAttribute("content","course-details");
        return "base-layout";
     }

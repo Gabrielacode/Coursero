@@ -1,9 +1,14 @@
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="content">
-    <h2>Spring Boot Basics</h2>
-    <p><strong>Description:</strong> Learn how to build REST APIs with Spring Boot, Data JPA, and Security.</p>
-    <p><strong>Instructor:</strong> John Doe</p>
-    <p><strong>Price:</strong> $49.99</p>
+    <div class="card p-3" th:if ="${result.isPresent()}" th:object="${result.get()}">
+        <h2 th:text="*{courseName}">Spring Boot Basics</h2>
+        <p><strong>Description:</strong> <span th:text="*{courseDescription}">Learn how to build REST APIs with Spring Boot, Data JPA, and Security.</span></p>
+        <p><strong>Instructor:</strong>  <span th:text="*{instructorName}"> John Doe</span></p>
+        <p><strong>Duration:</strong>  <span th:text="*{numberOfHours}"> John Doe</span> hours</p>
+    </div>
 
-    <a href="/courses" class="btn btn-secondary">Back to Courses</a>
+
+    <a href="/courses" class="btn btn-secondary m-2">Back to Courses</a>
 </div>
-
+</html>
