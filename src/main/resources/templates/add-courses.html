@@ -6,34 +6,34 @@
 </head>
 <body>
 <div th:fragment="content">
-    <form th:action="@{/courses/add}" th:object="${course}" method="post">
+    <form action="#" th:action="@{/courses/add-course}" th:object="${courseRequestDto}" method="post">
 
         <!-- Course Title -->
-        <div class="form-group">
+        <div class="form-group m-2">
             <label for="title">Course Title</label>
-            <input type="text"  class="form-control" id="title" placeholder="Enter course title" required>
+            <input type="text"  class="form-control" id="title" placeholder="Enter course title" th:field="*{courseName}" required>
         </div>
 
         <!-- Description -->
-        <div class="form-group">
+        <div class="form-group m-2">
             <label for="description">Description</label>
-            <textarea  class="form-control" id="description" rows="3" placeholder="Enter course description"></textarea>
+            <textarea  class="form-control" id="description" rows="3" placeholder="Enter course description" th:field="*{courseDescription}"  ></textarea>
         </div>
 
         <!-- Instructor -->
-        <div class="form-group">
+        <div class="form-group m-2">
             <label for="instructor">Instructor</label>
-            <input type="text"  class="form-control" id="instructor" placeholder="Enter instructor name">
+            <input type="text"  class="form-control" id="instructor" placeholder="Enter instructor name" th:field="*{instructorName}"  >
         </div>
 
         <!-- Duration -->
-        <div class="form-group">
+        <div class="form-group m-2">
             <label for="duration">Duration (hours)</label>
-            <input type="number"  class="form-control" id="duration" placeholder="Enter course duration">
+            <input type="number"  class="form-control" id="duration" placeholder="Enter course duration" th:field="*{numberOfHours}" >
         </div>
 
         <!-- Submit -->
-        <button type="submit" class="btn btn-primary">Add Course</button>
+        <button type="submit" class="btn btn-primary m-2">Add Course</button>
     </form>
 </div>
 </body>
