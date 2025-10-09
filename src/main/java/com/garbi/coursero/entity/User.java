@@ -1,9 +1,6 @@
 package com.garbi.coursero.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,10 +14,12 @@ import java.util.stream.Stream;
 
 //We will want the user entity to be in charge of all security operations
 //It will also implement user details
-@Entity
+@Entity()
+@Table(name = "users")
 @NoArgsConstructor
 @Getter
 @Setter
+
 public class User implements UserDetails {
     //The user will have an id
     @Id

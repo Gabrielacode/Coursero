@@ -2,6 +2,7 @@ package com.garbi.coursero.configuration;
 
 import com.garbi.coursero.services.UserService;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -17,8 +18,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 
 //This is for the security configuration of our application
-@EnableWebSecurity
-public class SecurityConfiguration  {
+@Configuration
+@EnableWebSecurity(debug = true)
+public class CustomSecurityConfig    {
 
     //First we going to lock all the endpoints
 
@@ -41,13 +43,12 @@ public class SecurityConfiguration  {
         //First our authentication provider
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);
         provider.setPasswordEncoder(passwordEncoder);
-        ProviderManager manager = new ProviderManager(provider);
-        return manager;
+        return new ProviderManager(provider);
     }
 
     //Then our filter chain
     @Bean
-    public SecurityFilterChain springSecurityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
                  return http.
                          authorizeHttpRequests((authentication)->{
                             //We are going to allow all access to the login and register urls and the css url
@@ -63,6 +64,7 @@ public class SecurityConfiguration  {
                          //Then our form login
                         formLogin(formLoginSettings ->{
                             formLoginSettings.loginPage("/login")
+                                    .loginProcessingUrl("/login")
                                     .usernameParameter("usernameOrEmail")
                                     .passwordParameter("password")
                                     .defaultSuccessUrl("/");
