@@ -24,10 +24,7 @@ public class CustomSecurityConfig    {
 
     //First lets define our userDetails service
 
-    @Bean
-    public UserDetailsService userDetailsService(UserService userService) {
-        return  userService;
-    }
+
 
     //Then our password encoder
     @Bean
@@ -70,7 +67,13 @@ public class CustomSecurityConfig    {
 
 
                                     ;
-                         }).build();
+                         }).
+                         logout(logout->{
+                          logout.logoutUrl("/log-out")
+                                          .logoutSuccessUrl("/login?logout=true").
+                                  permitAll();
+                         }).
+                         build();
 
     }
 }
