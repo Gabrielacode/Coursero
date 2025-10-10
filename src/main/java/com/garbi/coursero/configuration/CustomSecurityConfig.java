@@ -10,12 +10,10 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.server.SecurityWebFilterChain;
 
 //This is for the security configuration of our application
 @Configuration
@@ -52,7 +50,7 @@ public class CustomSecurityConfig    {
                  return http.
                          authorizeHttpRequests((authentication)->{
                             //We are going to allow all access to the login and register urls and the css url
-                            authentication.requestMatchers("/login","/register","/styles.css").permitAll()
+                            authentication.requestMatchers("/register","/css/**","/favicon/**").permitAll()
                                     .anyRequest().authenticated();
                          }).
                          //first we will allow session management
@@ -64,10 +62,14 @@ public class CustomSecurityConfig    {
                          //Then our form login
                         formLogin(formLoginSettings ->{
                             formLoginSettings.loginPage("/login")
-                                    .loginProcessingUrl("/login")
+                                    .loginProcessingUrl("/login-process")
                                     .usernameParameter("usernameOrEmail")
                                     .passwordParameter("password")
-                                    .defaultSuccessUrl("/");
+                                    .defaultSuccessUrl("/courses",true)
+                                    .permitAll()
+
+
+                                    ;
                          }).build();
 
     }
