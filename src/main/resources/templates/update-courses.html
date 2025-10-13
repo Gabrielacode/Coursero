@@ -1,0 +1,40 @@
+<!-- fragments/courseForm.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Course Form</title>
+</head>
+<body>
+<div th:fragment="content">
+    <form action="#" th:action="@{/courses/update-course }" th:object="${course}" method="post">
+        <input type="hidden" th:field="*{id}" />
+        <!-- Course Title -->
+        <div class="form-group m-2">
+            <label for="title">Course Title</label>
+            <input type="text"  class="form-control" id="title" placeholder="Enter course title" th:field="*{courseName}" th:value="${course.courseName}">
+        </div>
+
+        <!-- Description -->
+        <div class="form-group m-2">
+            <label for="description">Description</label>
+            <textarea  class="form-control" id="description" rows="3" placeholder="Enter course description" th:field="*{courseDescription}" th:value="${course.courseDescription}"  ></textarea>
+        </div>
+
+        <!-- Instructor -->
+        <div class="form-group m-2">
+            <label for="instructor">Instructor</label>
+            <input type="text"  class="form-control" id="instructor" placeholder="Enter instructor name" th:field="*{instructorName}" th:value="${course.instructorName}"  >
+        </div>
+
+        <!-- Duration -->
+        <div class="form-group m-2">
+            <label for="duration">Duration (hours)</label>
+            <input type="number"  class="form-control" id="duration" placeholder="Enter course duration" th:field="*{numberOfHours}" th:value="${course.numberOfHours}" >
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="btn btn-primary m-2">Update Course</button>
+    </form>
+</div>
+</body>
+</html>

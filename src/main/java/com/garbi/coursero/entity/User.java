@@ -41,6 +41,9 @@ public class User implements UserDetails {
     @Column()
     String role;
 
+    @OneToMany(mappedBy = "user" ,cascade = CascadeType.ALL)
+    List<Course> courses ;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

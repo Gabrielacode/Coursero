@@ -7,6 +7,15 @@ import com.garbi.coursero.entity.Course;
 
 public class CourseMapper {
     public static Course courseRequestToCourse(CourseRequestDto requestDto){
-        return new Course(null, requestDto.getCourseName(),requestDto.getCourseDescription(),requestDto.getInstructorName(),requestDto.getNumberOfHours());
+
+        //Here we will use the Lombok Builder to build the course specifying the things we need
+       var course  =  Course.builder()
+                .courseDescription(requestDto.getCourseDescription())
+               .courseName(requestDto.getCourseName())
+               .numberOfHours(requestDto.getNumberOfHours())
+               .instructorName(requestDto.getInstructorName())
+               .build();
+
+        return course;
     }
 }

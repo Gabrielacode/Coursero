@@ -1,5 +1,7 @@
 
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
 <div th:fragment="content">
     <div class="card p-3" th:if ="${result.isPresent()}" th:object="${result.get()}">
         <h2 th:text="*{courseName}">Spring Boot Basics</h2>
@@ -8,7 +10,12 @@
         <p><strong>Duration:</strong>  <span th:text="*{numberOfHours}"> John Doe</span> hours</p>
     </div>
 
+    <div class="d-flex start-content-between mb-3">
+        <a href="/courses" class="btn btn-secondary m-2">Back to Courses</a>
+<!--        Here we will check if the user is authenticated already and is the owner of the course-->
+        <a  th:if ="${ result.isPresent() && @courseService.doesUserOwnCourseBasedOnId(#authentication,result.get().getId())}"  th:href="@{/courses/update/{id}(id = ${result.get().getId()})}" class="btn btn-primary m-2" th:m>Update</a>
+        <a  th:if ="${ result.isPresent() && @courseService.doesUserOwnCourseBasedOnId(#authentication,result.get().getId())}"  th:href="@{/courses/delete/{id}(id = ${result.get().getId()})}" class="btn btn-danger m-2" th:m>Delete</a>
+    </div>
 
-    <a href="/courses" class="btn btn-secondary m-2">Back to Courses</a>
 </div>
 </html>

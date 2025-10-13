@@ -1,19 +1,14 @@
 package com.garbi.coursero.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 
 //This is the Course entity that is responsible for handling all the course responsibilities
 @Entity
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 public class Course {
     @Id
@@ -36,5 +31,8 @@ public class Course {
 
     int numberOfHours;
 
+// We will now implement a one to many relationship between a user and a course
 
+    @ManyToOne()
+    User user;
 }
