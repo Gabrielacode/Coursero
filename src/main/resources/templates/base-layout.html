@@ -26,7 +26,12 @@
                     <form th:action="@{/log-out}" method="post">
                         <button class ="nav-link" type="submit">Log out</button>
                     </form>
-
+                </li>
+                <li sec:authorize="authenticated" class="nav-item">
+              <img  th:src="@{images/{path} (path=${#authentication.getPrincipal().getProfileImageUrl()})}"
+                                                                        alt="Profile"
+                                                                        class="rounded-circle shadow-sm"
+                                                                        style="width:48px; height:48px; object-fit:cover;">
                 </li>
                 <li sec:authorize="!isAuthenticated()" class="nav-item"><a class="nav-link" href="/login">Login</a></li>
                 <li sec:authorize="!isAuthenticated()" class="nav-item"><a class="nav-link" href="/register">Register</a></li>

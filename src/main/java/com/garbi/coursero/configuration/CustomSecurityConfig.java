@@ -18,7 +18,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 //This is for the security configuration of our application
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity()
 @EnableMethodSecurity
 public class CustomSecurityConfig    {
 
@@ -49,7 +49,7 @@ public class CustomSecurityConfig    {
                  return http.
                          authorizeHttpRequests((authentication)->{
                             //We are going to allow all access to the login and register urls and the css url
-                            authentication.requestMatchers("/register","/css/**","/favicon/**").permitAll()
+                            authentication.requestMatchers("/register","/css/**","/favicon/**","/images/**").permitAll()
                                     .anyRequest().authenticated();
                          }).
                          //first we will allow session management

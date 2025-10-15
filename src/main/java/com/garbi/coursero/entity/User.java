@@ -36,6 +36,10 @@ public class User implements UserDetails {
     @Column
     String password;
 
+    //The location of the user profile image file
+    @Column
+    String profileImageUrl;
+
     //Then the role
     //The default role will be user
     @Column()
