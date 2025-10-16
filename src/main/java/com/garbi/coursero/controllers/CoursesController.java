@@ -5,12 +5,17 @@ import com.garbi.coursero.dtos.mapper.CourseMapper;
 import com.garbi.coursero.entity.Course;
 import com.garbi.coursero.entity.User;
 import com.garbi.coursero.services.CourseService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
@@ -54,9 +59,22 @@ public class CoursesController {
     }
 
     @PostMapping("/add-course")
-    public String addCourse(@ModelAttribute("courseRequestDto") CourseRequestDto course, Authentication authentication, ModelMap model){
+    public String addCourse( @Valid @ModelAttribute("courseRequestDto") CourseRequestDto course, BindingResult results , Authentication authentication,  ModelMap model){
            //We will add the course to the db and then redirect to the course
         //Now we need to link the course to a user when we are creating a new  course
+        if(results.hasErrors()){
+            model.addAttribute("content","add-courses");
+            model.addAttribute("courseRequestDto",new CourseRequestDto());
+            // Extract all validation messages into a list
+            List<String> errorMessages = results.getAllErrors()
+                    .stream()
+                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                    .toList();
+
+            model.addAttribute("errorMessages", errorMessages);
+            model.addAttribute("showErrorPopup", true);
+            return "base-layout";
+        }
         var user = (User) authentication.getPrincipal();
         var courseAdded = courseService.addNewCourse(course,user);
         return "redirect:/courses";

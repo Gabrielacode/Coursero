@@ -12,24 +12,28 @@
         <div class="form-group m-2">
             <label for="title">Course Title</label>
             <input type="text"  class="form-control" id="title" placeholder="Enter course title" th:field="*{courseName}" required>
+            <span class="text-danger" th:if="${#fields.hasErrors('courseName')}" th:errors="*{courseName}"></span>
         </div>
 
         <!-- Description -->
         <div class="form-group m-2">
             <label for="description">Description</label>
             <textarea  class="form-control" id="description" rows="3" placeholder="Enter course description" th:field="*{courseDescription}"  ></textarea>
+            <span class="text-danger" th:if="${#fields.hasErrors('courseDescription')}" th:errors="*{courseDescription}"></span>
         </div>
 
         <!-- Instructor -->
         <div class="form-group m-2">
             <label for="instructor">Instructor</label>
             <input type="text"  class="form-control" id="instructor" placeholder="Enter instructor name" th:field="*{instructorName}"  >
+            <span class="text-danger" th:if="${#fields.hasErrors('instructorName')}" th:errors="*{instructorName}"></span>
         </div>
 
         <!-- Duration -->
         <div class="form-group m-2">
             <label for="duration">Duration (hours)</label>
-            <input type="number"  class="form-control" id="duration" placeholder="Enter course duration" th:field="*{numberOfHours}" >
+            <input type="number"   class="form-control" id="duration" placeholder="Enter course duration" th:field="*{numberOfHours}" >
+            <span class="text-danger" th:if="${#fields.hasErrors()}" th:text="Error exists "></span>
         </div>
 
         <!-- Submit -->

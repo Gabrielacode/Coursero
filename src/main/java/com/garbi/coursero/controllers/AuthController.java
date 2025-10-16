@@ -5,12 +5,18 @@ import com.garbi.coursero.dtos.mapper.UserMapper;
 import com.garbi.coursero.entity.User;
 import com.garbi.coursero.services.FileService;
 import com.garbi.coursero.services.UserService;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Valid;
+import jakarta.validation.Validator;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,13 +24,19 @@ import org.springframework.web.servlet.FlashMap;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 //This controller is in charge of all the auth operations
 @Controller
 @RequiredArgsConstructor
+@Validated
 public class AuthController {
     private final UserService userService;
     private final FileService fileService;
+
+    private final Validator validator;
     @GetMapping("/login")
     public String login(ModelMap model) {
         model.addAttribute("content","login");
@@ -40,9 +52,26 @@ public class AuthController {
     //Then the Post Mapping for Register
     //We will just save the user to the db
     @PostMapping("/register")
-    public String processRegisteration(@ModelAttribute("user") UserRegisterationDto user, ModelMap modelMap, RedirectAttributes redirectAttributes) {
-        //If there are any errors  when trying to save the user like UniqueCO
+    public String processRegisteration(@ModelAttribute("user") UserRegisterationDto user,BindingResult results, ModelMap model, RedirectAttributes redirectAttributes) {
+        //If there are any errors  when trying to save the user like Unique
+        //Spring keeps throwing an exception when i use @Valid even though i provide a binding results beside it
+        //Lets handle the validation manually
+
         try {
+            var constraints = validator.validate(user);
+            if (!constraints.isEmpty()) {
+                // Extract all validation messages into a list
+                List<String> errorMessages = constraints
+                        .stream()
+                        .map(ConstraintViolation::getMessage)
+                        .toList();
+
+                model.addAttribute("errorMessages", errorMessages);
+                model.addAttribute("showErrorPopup", true);
+                model.addAttribute("content","register");
+                model.addAttribute("user", new UserRegisterationDto());
+                return "base-layout";
+            }
             //Now that we are storing the user image
             //We will first save the image then we will return the file path and then be put into the user object to be stored
             String userProfilePath = fileService.saveUserProfileImage(user.getImageFile());
@@ -62,7 +91,7 @@ public class AuthController {
             redirectAttributes.addFlashAttribute("error",exception.getMessage());
             return  "redirect:/register";
         } catch (IOException e) {
-           //Here we will tell the user that the file couldnt be uploaded successfully
+           //Here we will tell the user that the file couldn't be uploaded successfully
             System.out.println(e);
             redirectAttributes.addFlashAttribute("error","File couldnt be uplaoded successfully ");
             return  "redirect:/register";
