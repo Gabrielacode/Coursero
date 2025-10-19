@@ -8,6 +8,7 @@ import com.garbi.coursero.services.CourseService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -27,9 +28,10 @@ public class CoursesController {
     public String getCourses(
             @RequestParam(name = "num",defaultValue = "0") Integer pageNumber,
             @RequestParam(name = "size",defaultValue = "10") Integer pageSize,
+            @RequestParam(name="sort",defaultValue = "courseName:asc") Sort sort,
             ModelMap model) {
-      var result =   courseService.getPaginatedResultOfCourse(pageSize,pageNumber);
-
+      var result =   courseService.getPaginatedResultOfCourse(pageSize,pageNumber,sort);
+        System.out.println(result.getSort());
       model.addAttribute("result",result);
         model.addAttribute("content","courses");
         return "base-layout";

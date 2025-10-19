@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionOperations;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -32,8 +33,8 @@ public class CourseService {
       return courseRepository.save(courseToAdd);
   }
 
-  public Page<Course> getPaginatedResultOfCourse(int pageSize , int pageNumber){
-     PageRequest pageRequest = PageRequest.of(pageNumber, pageSize) ;
+  public Page<Course> getPaginatedResultOfCourse(int pageSize , int pageNumber,Sort sort){
+     PageRequest pageRequest = PageRequest.of(pageNumber, pageSize,sort) ;
       return courseRepository.findAll(pageRequest) ;
   }
   //Before a user can delete or save a course we willneed to check if the user is the owner of the course
