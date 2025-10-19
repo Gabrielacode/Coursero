@@ -4,7 +4,9 @@
 
     <form  th:action="@{/courses}" method="get">
     <div class="d-flex justify-content-between m-3">
-        <input type="text" class="form-control w-25" placeholder="Search courses...">
+        <input type="text"
+               name="search"
+               class="form-control w-25" placeholder="Search courses...">
         <a class="btn btn-primary" th:href="@{/courses/add}">Add Course</a>
         <select  name="sort" th:selected="${{result.getSort()}}" class="form-select w-25">
             <option value="courseName:asc">Sort by Name</option>
@@ -34,10 +36,10 @@
 
 
     <nav>
-        <ul class="pagination justify-content-center mt-4">
-            <li th:if ="${result.hasPrevious()}"  class="page-item"><a class="page-link" th:href="@{/courses(num=${result.getNumber()-1})}">Previous</a></li>
-            <li class="page-item" ><a class="page-link"  th:text="${result.getNumber()}" th:href="@{/courses(num=${result.getNumber()})}">1</a></li>
-            <li th:if ="${result.hasNext()}" class="page-item"><a class="page-link" th:href="@{/courses(num=${result.getNumber()+1})}">Next</a></li>
+        <ul class="pagination justify-content-center mt-4" th:with="searchQuery = ${param.search}, sortSearch = ${{result.getSort()}}">
+            <li th:if ="${result.hasPrevious()}"  class="page-item"><a class="page-link" th:href="@{/courses(num=${result.getNumber()-1} , search = ${searchQuery} ,sort = ${sortSearch} )}">Previous</a></li>
+            <li class="page-item" ><a class="page-link"  th:text="${result.getNumber()}" th:href="@{/courses(num=${result.getNumber()} , search = ${searchQuery} ,sort = ${sortSearch})}">1</a></li>
+            <li th:if ="${result.hasNext()}" class="page-item"><a class="page-link" th:href="@{/courses(num=${result.getNumber()+1} , search = ${searchQuery} ,sort = ${sortSearch})}">Next</a></li>
         </ul>
     </nav>
 

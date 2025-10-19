@@ -48,7 +48,8 @@ public class SortConverter implements Formatter<Sort> {
         }
         var directionSection = sortString.substring(indexOfColumn+1).trim().toLowerCase(locale);
         //Then we will replace the part
-        String result  = sortString.substring(0, indexOfColumn).trim() + directionSection;
+        String result  = sortString.substring(0, indexOfColumn+1).trim() + directionSection;
+        System.out.println(result);
         return result;
     }
 }

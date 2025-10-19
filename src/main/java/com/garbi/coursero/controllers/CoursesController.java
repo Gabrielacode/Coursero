@@ -29,8 +29,9 @@ public class CoursesController {
             @RequestParam(name = "num",defaultValue = "0") Integer pageNumber,
             @RequestParam(name = "size",defaultValue = "10") Integer pageSize,
             @RequestParam(name="sort",defaultValue = "courseName:asc") Sort sort,
+            @RequestParam(name="search",defaultValue = "") String searchQuery,
             ModelMap model) {
-      var result =   courseService.getPaginatedResultOfCourse(pageSize,pageNumber,sort);
+      var result =   courseService.getPaginatedResultOfCourse(pageSize,pageNumber,sort,searchQuery);
         System.out.println(result.getSort());
       model.addAttribute("result",result);
         model.addAttribute("content","courses");
@@ -82,7 +83,7 @@ public class CoursesController {
         return "redirect:/courses";
     }
 
-    @PreAuthorize("@courseService.doesUserOwnCourseBasedOnId(authentication,#course.id)")
+    @PreAuthorize(" hasRole('ADMIN')|| @courseService.doesUserOwnCourseBasedOnId(authentication,#course.id)")
     @PostMapping("/update-course")
     public String updateCourse(@ModelAttribute("course") Course course, Authentication authentication, ModelMap model){
         //We added method security to chaeck whether the owner of the course is the authenticated user trying to access this course
@@ -93,7 +94,7 @@ public class CoursesController {
     }
     //We will do the same for deleting
     //But we want to use a custom bean for the authorization
-    @PreAuthorize("@courseService.doesUserOwnCourseBasedOnId(authentication,#id)")
+    @PreAuthorize("hasRole('ADMIN')||@courseService.doesUserOwnCourseBasedOnId(authentication,#id)")
     @GetMapping("/delete/{id}")
     public String deleteCourse(@PathVariable int id){
         //We added method security to chaeck whether the owner of the course is the authenticated user trying to access this course

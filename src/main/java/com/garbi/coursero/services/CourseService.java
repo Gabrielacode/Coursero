@@ -33,9 +33,16 @@ public class CourseService {
       return courseRepository.save(courseToAdd);
   }
 
-  public Page<Course> getPaginatedResultOfCourse(int pageSize , int pageNumber,Sort sort){
-     PageRequest pageRequest = PageRequest.of(pageNumber, pageSize,sort) ;
-      return courseRepository.findAll(pageRequest) ;
+  public Page<Course> getPaginatedResultOfCourse(int pageSize , int pageNumber,Sort sort,String searchQuery){
+      //If there is a search query
+      //Then we will use that to query the db else we will use the full list
+      PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, sort);
+      if (searchQuery.isBlank()) {
+
+          return courseRepository.findAll(pageRequest);
+      }
+      return  courseRepository.findCourseByNameAndDescription(searchQuery,pageRequest);
+
   }
   //Before a user can delete or save a course we willneed to check if the user is the owner of the course
   public void deleteCourseById(int id ) {
@@ -49,13 +56,15 @@ public class CourseService {
     public  boolean doesUserOwnCourseBasedOnId(Authentication auth, int courseId){
 
         var course = courseRepository.findById(courseId);
+        var roleIsAdmin = auth.getAuthorities().stream().anyMatch(authority->authority.getAuthority().contains("ROLE_ADMIN"));
         if (course.isPresent()){
             var courseResult = course.get();
             var user =(User)auth.getPrincipal() ;
               if (Objects.isNull(user) || Objects.isNull(courseResult.getUser())){
                   return false;
               }
-            return courseResult.getUser().getId().equals(user.getId());
+            System.out.println(roleIsAdmin);
+            return courseResult.getUser().getId().equals(user.getId())||roleIsAdmin;
         }
         else return false;
     }
