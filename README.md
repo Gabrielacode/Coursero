@@ -18,9 +18,21 @@ The system implements **secure authentication**, **pagination**, and **access co
 - **Course Management**
     - Create, update, delete, and view course listings.
     - Paginated results for efficiency.
-  
 
+- **Search Functionality**
+  - Search courses by title or description.
 
+---
+
+## Pictures 
+ - ### Login Page  
+  <img src="/pictures/coursero1.png" label ="Login">  
+            
+- ### Register Page  
+  <img src="/pictures/coursero2.png" label ="Register ">
+
+- ### Main Page
+  <img src="/pictures/coursero3.png" label ="Main ">
 ---
 
 ## 🏗️ Tech Stack
@@ -30,7 +42,7 @@ The system implements **secure authentication**, **pagination**, and **access co
 | **Backend** | Spring Boot |
 | **Database** | PostgreSQL |
 | **ORM** | Hibernate / Spring Data JPA |
-| **Security** | Spring Security (JWT + Roles) |
+| **Security** | Spring Security (Roles) |
 | **Build Tool** | Maven or Gradle |
 | **API Style** | REST |
 | **Pagination** | Spring Data `Pageable` |
@@ -43,12 +55,45 @@ src/
 ├── main/  
 │ ├── java/com/example/coursemanagement/  
 │ │ ├── controller/ #REST controllers  
-│ │ ├── model/ # JPA entities  
-│ │ ├── repository/ # Database access layer  
-│ │ ├── service/ # Business logic  
-│ │ └── security/ # Authentication & JWT config 
+│ │ ├── entities/ # JPA entities  
+│ │ ├── repositories/ # Database access layer  
+│ │ ├── dtos/ # Data transfer objects  
+│ │ ├── services/ # Business logic  
+│ │ ├── utils/ # Utilities  
+│ │ └── configuration/ # Authentication & Web Mvc config   
 │ └── resources/  
-│ ├── application.properties  
-│ └──  
+│ ├── application.properties    
+│ └── templates # Contain website UI
 assets/  #For images stored by the user 
 
+---
+
+## ⚙️ Getting Started
+
+### 🧩 1. Clone the Repository
+```bash
+    git clone https://github.com/Gabrielacode/Coursero.git
+    cd Coursero
+```
+### 🗄️ 2. Configure PostgreSQL
+Edit your application.properties file: 
+```properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/course_db
+spring.datasource.username=your username
+spring.datasource.password=yourpassword
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+
+#Or you can configure any database of your choice 
+
+```
+
+### ▶️ 3. Run the Application
+```bash
+  mvn spring-boot:run
+```
+Open your browser  and visit
+```text
+  http://localhost:8089/
+```
