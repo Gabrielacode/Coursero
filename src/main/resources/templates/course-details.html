@@ -13,8 +13,8 @@
     <div class="d-flex start-content-between mb-3">
         <a href="/courses" class="btn btn-secondary m-2">Back to Courses</a>
 <!--        Here we will check if the user is authenticated already and is the owner of the course-->
-        <a  th:if ="${ result.isPresent() && @courseService.doesUserOwnCourseBasedOnId(#authentication,result.get().getId())}"  th:href="@{/courses/update/{id}(id = ${result.get().getId()})}" class="btn btn-primary m-2" th:m>Update</a>
-        <a  th:if ="${ result.isPresent() && @courseService.doesUserOwnCourseBasedOnId(#authentication,result.get().getId())}"  th:href="@{/courses/delete/{id}(id = ${result.get().getId()})}" class="btn btn-danger m-2" th:m>Delete</a>
+        <a   th:if ="${ result.isPresent() &&  @courseService.doesUserOwnCourseBasedOnId(#authentication,result.get().getId())}"  th:href="@{/courses/update/{id}(id = ${result.get().getId()})}" class="btn btn-primary m-2" th:m>Update</a>
+        <a  th:if ="${ result.isPresent() &&  @courseService.doesUserOwnCourseBasedOnId(#authentication,result.get().getId())}"  th:href="@{/courses/delete/{id}(id = ${result.get().getId()})}" class="btn btn-danger m-2" th:m>Delete</a>
     </div>
 
 </div>

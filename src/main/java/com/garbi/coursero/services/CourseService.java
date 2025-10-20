@@ -57,6 +57,7 @@ public class CourseService {
 
         var course = courseRepository.findById(courseId);
         var roleIsAdmin = auth.getAuthorities().stream().anyMatch(authority->authority.getAuthority().contains("ROLE_ADMIN"));
+        if(roleIsAdmin) return true;
         if (course.isPresent()){
             var courseResult = course.get();
             var user =(User)auth.getPrincipal() ;
@@ -64,7 +65,7 @@ public class CourseService {
                   return false;
               }
             System.out.println(roleIsAdmin);
-            return courseResult.getUser().getId().equals(user.getId())||roleIsAdmin;
+            return courseResult.getUser().getId().equals(user.getId());
         }
         else return false;
     }
